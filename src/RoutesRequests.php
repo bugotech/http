@@ -817,4 +817,25 @@ trait RoutesRequests
     {
         return $this->bound('middleware.disable') && $this->make('middleware.disable') === true;
     }
+
+    /**
+     * Prepare the given request instance for use with the application.
+     *
+     * @param  \Symfony\Component\HttpFoundation\Request $request
+     * @return \Illuminate\Http\Request
+     */
+    protected function prepareRequest(SymfonyRequest $request)
+    {
+        if (! $request instanceof Request) {
+            $request = Request::createFromBase($request);
+        }
+
+        $request->setUserResolver(function ($guard = null) {
+            return $this->make('auth')->guard($guard)->user();
+        })->setRouteResolver(function () {
+                return $this->currentRoute;
+            });
+
+        return $request;
+    }
 }
