@@ -2,7 +2,6 @@
 
 use Closure;
 use Exception;
-use Throwable;
 use FastRoute\Dispatcher;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
@@ -10,12 +9,10 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Bugotech\Http\Routing\Pipeline;
 use Bugotech\Http\Routing\Closure as RoutingClosure;
-use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\Exception\HttpResponseException;
 use Bugotech\Http\Routing\Controller as LumenController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use Psr\Http\Message\ResponseInterface as PsrResponseInterface;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
-use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
@@ -532,8 +529,6 @@ trait RoutesRequests
             });
         } catch (Exception $e) {
             return $this->prepareResponse($this->sendExceptionToHandler($e));
-        } catch (Throwable $e) {
-            return $this->prepareResponse($this->sendExceptionToHandler($e));
         }
     }
 
@@ -549,7 +544,7 @@ trait RoutesRequests
             $request = Request::capture();
         }
 
-        $this->instance(Request::class, $this->prepareRequest($request));
+        $this->instance('\Illuminate\Http\Request', $this->prepareRequest($request));
 
         return [$request->getMethod(), $request->getPathInfo()];
     }
@@ -787,9 +782,7 @@ trait RoutesRequests
      */
     public function prepareResponse($response)
     {
-        if ($response instanceof PsrResponseInterface) {
-            $response = (new HttpFoundationFactory)->createResponse($response);
-        } elseif (! $response instanceof SymfonyResponse) {
+        if (! $response instanceof SymfonyResponse) {
             $response = new Response($response);
         } elseif ($response instanceof BinaryFileResponse) {
             $response = $response->prepare(Request::capture());
