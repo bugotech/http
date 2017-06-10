@@ -96,7 +96,7 @@ trait RoutesRequests
      */
     protected function updateGroupStack(array $attributes)
     {
-        if (!empty($this->groupStack)) {
+        if (! empty($this->groupStack)) {
             $attributes = $this->mergeWithLastGroup($attributes);
         }
 
@@ -124,7 +124,7 @@ trait RoutesRequests
             $new['as'] = $old['as'] . (isset($new['as']) ? '.' . $new['as'] : '');
         }
 
-        if (isset($old['suffix']) && !isset($new['suffix'])) {
+        if (isset($old['suffix']) && ! isset($new['suffix'])) {
             $new['suffix'] = $old['suffix'];
         }
 
@@ -317,7 +317,7 @@ trait RoutesRequests
     {
         if (is_string($action)) {
             return ['uses' => $action];
-        } elseif (!is_array($action)) {
+        } elseif (! is_array($action)) {
             return [$action];
         }
 
@@ -335,7 +335,7 @@ trait RoutesRequests
      */
     public function hasGroupStack()
     {
-        return !empty($this->groupStack);
+        return ! empty($this->groupStack);
     }
 
     /**
@@ -404,7 +404,7 @@ trait RoutesRequests
      */
     protected function mergeAsGroup(array $action, $as = null)
     {
-        if (isset($as) && !empty($as)) {
+        if (isset($as) && ! empty($as)) {
             if (isset($action['as'])) {
                 $action['as'] = $as . '.' . $action['as'];
             } else {
@@ -423,7 +423,7 @@ trait RoutesRequests
      */
     public function middleware($middleware)
     {
-        if (!is_array($middleware)) {
+        if (! is_array($middleware)) {
             $middleware = [$middleware];
         }
 
@@ -472,7 +472,7 @@ trait RoutesRequests
         if ($response instanceof SymfonyResponse) {
             $response->send();
         } else {
-            echo (string)$response;
+            echo (string) $response;
         }
 
         if (count($this->middleware) > 0) {
@@ -495,7 +495,7 @@ trait RoutesRequests
         $response = $this->prepareResponse($response);
 
         foreach ($this->middleware as $middleware) {
-            if (!is_string($middleware)) {
+            if (! is_string($middleware)) {
                 continue;
             }
 
@@ -540,7 +540,7 @@ trait RoutesRequests
      */
     protected function parseIncomingRequest($request)
     {
-        if (!$request) {
+        if (! $request) {
             $request = Request::capture();
         }
 
@@ -556,7 +556,7 @@ trait RoutesRequests
      */
     protected function createDispatcher()
     {
-        return $this->dispatcher ? : \FastRoute\simpleDispatcher(function ($r) {
+        return $this->dispatcher ?: \FastRoute\simpleDispatcher(function ($r) {
             foreach ($this->routes as $route) {
                 $r->addRoute($route['method'], $route['uri'], $route['action']);
             }
@@ -660,13 +660,13 @@ trait RoutesRequests
     {
         $uses = $routeInfo[1]['uses'];
 
-        if (is_string($uses) && !Str::contains($uses, '@')) {
+        if (is_string($uses) && ! Str::contains($uses, '@')) {
             $uses .= '@__invoke';
         }
 
         list($controller, $method) = explode('@', $uses);
 
-        if (!method_exists($instance = $this->make($controller), $method)) {
+        if (! method_exists($instance = $this->make($controller), $method)) {
             throw new NotFoundHttpException;
         }
 
@@ -746,7 +746,7 @@ trait RoutesRequests
      */
     protected function gatherMiddlewareClassNames($middleware)
     {
-        $middleware = is_string($middleware) ? explode('|', $middleware) : (array)$middleware;
+        $middleware = is_string($middleware) ? explode('|', $middleware) : (array) $middleware;
 
         return array_map(function ($name) {
             list($name, $parameters) = array_pad(explode(':', $name, 2), 2, null);
@@ -764,7 +764,7 @@ trait RoutesRequests
      */
     protected function sendThroughPipeline(array $middleware, Closure $then)
     {
-        if (count($middleware) > 0 && !$this->shouldSkipMiddleware()) {
+        if (count($middleware) > 0 && ! $this->shouldSkipMiddleware()) {
             return (new Pipeline($this))
                 ->send($this->make('request'))
                 ->through($middleware)
@@ -782,7 +782,7 @@ trait RoutesRequests
      */
     public function prepareResponse($response)
     {
-        if (!$response instanceof SymfonyResponse) {
+        if (! $response instanceof SymfonyResponse) {
             $response = new Response($response);
         } elseif ($response instanceof BinaryFileResponse) {
             $response = $response->prepare(Request::capture());
@@ -819,7 +819,7 @@ trait RoutesRequests
      */
     protected function prepareRequest(SymfonyRequest $request)
     {
-        if (!$request instanceof Request) {
+        if (! $request instanceof Request) {
             $request = Request::createFromBase($request);
         }
 
