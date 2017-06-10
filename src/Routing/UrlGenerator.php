@@ -123,7 +123,7 @@ class UrlGenerator
         // for asset paths, but only for routes to endpoints in the application.
         $root = $this->getRootUrl($this->getScheme($secure));
 
-        return $this->removeIndex($root).'/'.trim($path, '/');
+        return $this->removeIndex($root) . '/' . trim($path, '/');
     }
 
     /**
@@ -141,7 +141,7 @@ class UrlGenerator
         // for asset paths, but only for routes to endpoints in the application.
         $root = $this->getRootUrl($this->getScheme($secure), $root);
 
-        return $this->removeIndex($root).'/'.trim($path, '/');
+        return $this->removeIndex($root) . '/' . trim($path, '/');
     }
 
     /**
@@ -154,7 +154,7 @@ class UrlGenerator
     {
         $i = 'index.php';
 
-        return str_contains($root, $i) ? str_replace('/'.$i, '', $root) : $root;
+        return str_contains($root, $i) ? str_replace('/' . $i, '', $root) : $root;
     }
 
     /**
@@ -177,7 +177,7 @@ class UrlGenerator
     protected function getScheme($secure)
     {
         if (is_null($secure)) {
-            return $this->forceSchema ?: $this->app->make('request')->getScheme().'://';
+            return $this->forceSchema ?: $this->app->make('request')->getScheme() . '://';
         }
 
         return $secure ? 'https://' : 'http://';
@@ -191,7 +191,7 @@ class UrlGenerator
      */
     public function forceSchema($schema)
     {
-        $this->forceSchema = $schema.'://';
+        $this->forceSchema = $schema . '://';
     }
 
     /**
@@ -221,7 +221,7 @@ class UrlGenerator
         $uri = $this->to($uri, [], $secure);
 
         if (! empty($parameters)) {
-            $uri .= '?'.http_build_query($parameters);
+            $uri .= '?' . http_build_query($parameters);
         }
 
         return $uri;
@@ -252,7 +252,7 @@ class UrlGenerator
     {
         if (is_null($secure)) {
             if (is_null($this->cachedScheme)) {
-                $this->cachedScheme = $this->app->make('request')->getScheme().'://';
+                $this->cachedScheme = $this->app->make('request')->getScheme() . '://';
             }
 
             return $this->cachedScheme;
@@ -310,7 +310,7 @@ class UrlGenerator
 
         $start = starts_with($root, 'http://') ? 'http://' : 'https://';
 
-        return preg_replace('~'.$start.'~', $scheme, $root, 1);
+        return preg_replace('~' . $start . '~', $scheme, $root, 1);
     }
 
     /**
@@ -323,6 +323,6 @@ class UrlGenerator
      */
     protected function trimUrl($root, $path, $tail = '')
     {
-        return trim($root.'/'.trim($path.'/'.$tail, '/'), '/');
+        return trim($root . '/' . trim($path . '/' . $tail, '/'), '/');
     }
 }
