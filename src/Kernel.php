@@ -1,4 +1,4 @@
-<?php namespace Illuminate\Http;
+<?php namespace Bugotech\Http;
 
 use Exception;
 use Throwable;
