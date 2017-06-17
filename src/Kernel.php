@@ -5,7 +5,6 @@ use Throwable;
 use Illuminate\Routing\Router;
 use Illuminate\Routing\Pipeline;
 use Bugotech\Foundation\Application;
-use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Contracts\Http\Kernel as KernelContract;
 use Symfony\Component\Debug\Exception\FatalThrowableError;
 
@@ -260,7 +259,7 @@ class Kernel implements KernelContract
      */
     protected function reportException(Exception $e)
     {
-        $this->app[ExceptionHandler::class]->report($e);
+        $this->app['\Illuminate\Contracts\Debug\ExceptionHandler']->report($e);
     }
 
     /**
@@ -272,7 +271,7 @@ class Kernel implements KernelContract
      */
     protected function renderException($request, Exception $e)
     {
-        return $this->app[ExceptionHandler::class]->render($request, $e);
+        return $this->app['\Illuminate\Contracts\Debug\ExceptionHandler']->render($request, $e);
     }
 
     /**
