@@ -141,7 +141,7 @@ class Kernel implements KernelContract
             }
         }
 
-        $this->app->terminate();
+        //$this->app->terminate();
     }
 
     /**
