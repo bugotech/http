@@ -4,8 +4,7 @@ use Exception;
 use Throwable;
 use Illuminate\Routing\Router;
 use Illuminate\Routing\Pipeline;
-use Illuminate\Support\Facades\Facade;
-use Illuminate\Contracts\Foundation\Application;
+use Bugotech\Foundation\Application;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Contracts\Http\Kernel as KernelContract;
 use Symfony\Component\Debug\Exception\FatalThrowableError;
@@ -15,7 +14,7 @@ class Kernel implements KernelContract
     /**
      * The application implementation.
      *
-     * @var \Illuminate\Contracts\Foundation\Application
+     * @var Application
      */
     protected $app;
 
@@ -50,7 +49,7 @@ class Kernel implements KernelContract
     /**
      * Create a new HTTP kernel instance.
      *
-     * @param  \Illuminate\Contracts\Foundation\Application  $app
+     * @param  Application  $app
      * @param  \Illuminate\Routing\Router  $router
      * @return void
      */
@@ -105,7 +104,7 @@ class Kernel implements KernelContract
     {
         $this->app->instance('request', $request);
 
-        Facade::clearResolvedInstance('request');
+        //Facade::clearResolvedInstance('request');
 
         $this->bootstrap();
 
