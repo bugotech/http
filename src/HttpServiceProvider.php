@@ -9,7 +9,9 @@ class HttpServiceProvider extends RoutingServiceProvider
     {
         parent::register();
 
-        $this->commands('\Bugotech\Http\Console\InstallCommand');
+        if (config('app.env') != 'production') {
+            $this->commands('\Bugotech\Http\Console\InstallCommand');
+        }
 
         $this->app->alias('router', '\Illuminate\Routing\Router');
     }
