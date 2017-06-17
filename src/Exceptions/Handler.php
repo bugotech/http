@@ -4,6 +4,8 @@ use Exception;
 use Illuminate\Http\Response;
 use Illuminate\Http\Exception\HttpResponseException;
 use Symfony\Component\Debug\Exception\FlattenException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\Debug\ExceptionHandler as SymfonyExceptionHandler;
 
 class Handler extends \Bugotech\Foundation\Exceptions\Handler
@@ -21,18 +23,72 @@ class Handler extends \Bugotech\Foundation\Exceptions\Handler
             return $e->getResponse();
         }
 
-        //return $this->app[ExceptionHandler::class]->render($request, $e);
-        $fe = FlattenException::create($e);
+        if ($this->isHttpException($e)) {
+            return $this->toIlluminateResponse($this->renderHttpException($e), $e);
+        } else {
+            return $this->toIlluminateResponse($this->convertExceptionToResponse($e), $e);
+        }
+    }
 
-        $handler = new SymfonyExceptionHandler(env('APP_DEBUG', false));
-
-        $decorated = $this->decorate($handler->getContent($fe), $handler->getStylesheet($fe));
-
-        $response = new Response($decorated, $fe->getStatusCode(), $fe->getHeaders());
+    /**
+     * Map exception into an illuminate response.
+     *
+     * @param  \Symfony\Component\HttpFoundation\Response  $response
+     * @param  \Exception  $e
+     * @return \Illuminate\Http\Response
+     */
+    protected function toIlluminateResponse($response, Exception $e)
+    {
+        $response = new Response($response->getContent(), $response->getStatusCode(), $response->headers->all());
 
         $response->exception = $e;
 
         return $response;
+    }
+
+    /**
+     * Render the given HttpException.
+     *
+     * @param  \Symfony\Component\HttpKernel\Exception\HttpException  $e
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    protected function renderHttpException(HttpException $e)
+    {
+        $status = $e->getStatusCode();
+
+        if (view()->exists("errors.{$status}")) {
+            return response()->view("errors.{$status}", ['exception' => $e], $status, $e->getHeaders());
+        } else {
+            return $this->convertExceptionToResponse($e);
+        }
+    }
+
+    /**
+     * Create a Symfony response for the given exception.
+     *
+     * @param  \Exception  $e
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    protected function convertExceptionToResponse(Exception $e)
+    {
+        $e = FlattenException::create($e);
+
+        $handler = new SymfonyExceptionHandler(config('app.debug'));
+
+        $decorated = $this->decorate($handler->getContent($e), $handler->getStylesheet($e));
+
+        return SymfonyResponse::create($decorated, $e->getStatusCode(), $e->getHeaders());
+    }
+
+    /**
+     * Determine if the given exception is an HTTP exception.
+     *
+     * @param  \Exception  $e
+     * @return bool
+     */
+    protected function isHttpException(Exception $e)
+    {
+        return $e instanceof HttpException;
     }
 
     /**
