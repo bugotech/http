@@ -56,11 +56,14 @@ class Handler extends \Bugotech\Foundation\Exceptions\Handler
     {
         $status = $e->getStatusCode();
 
-        if (view()->exists("errors.{$status}")) {
-            return response()->view("errors.{$status}", ['exception' => $e], $status, $e->getHeaders());
-        } else {
-            return $this->convertExceptionToResponse($e);
+        // Verificar se ha uma view implementado o erro
+        if (function_exists('view')) {
+            if (view()->exists("errors.{$status}")) {
+                return response()->view("errors.{$status}", ['exception' => $e], $status, $e->getHeaders());
+            }
         }
+
+        return $this->convertExceptionToResponse($e);
     }
 
     /**
