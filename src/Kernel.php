@@ -49,21 +49,11 @@ class Kernel implements KernelContract
      * Create a new HTTP kernel instance.
      *
      * @param  Application  $app
-     * @param  \Illuminate\Routing\Router  $router
      * @return void
      */
-    public function __construct(Application $app, Router $router)
+    public function __construct(Application $app)
     {
         $this->app = $app;
-        $this->router = $router;
-
-        foreach ($this->middlewareGroups as $key => $middleware) {
-            $router->middlewareGroup($key, $middleware);
-        }
-
-        foreach ($this->routeMiddleware as $key => $middleware) {
-            $router->middleware($key, $middleware);
-        }
     }
 
     /**
@@ -213,7 +203,15 @@ class Kernel implements KernelContract
      */
     public function bootstrap()
     {
-        //..
+        $this->router = $this->app['router'];
+
+        foreach ($this->middlewareGroups as $key => $middleware) {
+            $this->router->middlewareGroup($key, $middleware);
+        }
+
+        foreach ($this->routeMiddleware as $key => $middleware) {
+            $this->router->middleware($key, $middleware);
+        }
     }
 
     /**
