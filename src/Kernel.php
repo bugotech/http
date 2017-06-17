@@ -110,7 +110,7 @@ class Kernel implements KernelContract
 
         return (new Pipeline($this->app))
                     ->send($request)
-                    ->through($this->app->shouldSkipMiddleware() ? [] : $this->middleware)
+                    ->through($this->middleware)
                     ->then($this->dispatchToRouter());
     }
 
@@ -123,7 +123,7 @@ class Kernel implements KernelContract
      */
     public function terminate($request, $response)
     {
-        $middlewares = $this->app->shouldSkipMiddleware() ? [] : array_merge(
+        $middlewares = array_merge(
             $this->gatherRouteMiddlewares($request),
             $this->middleware
         );
