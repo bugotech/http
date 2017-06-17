@@ -13,16 +13,28 @@
 
     "require": {
         "php"                : ">=5.5.9",
+        "bugotech/foundation": "dev-master",
         "illuminate/pipeline": "5.2.*",
         "illuminate/http"    : "5.2.*",
+        "illuminate/routing" : "5.2.*",
         "nikic/fast-route"   : "~1.0"
     },
 
     "autoload": {
         "psr-4": {
             "Bugotech\\Http\\": "src/"
-        }
+        },
+        "files": [
+            "src/helpers.php"
+        ]
     },
+
+    "repositories": [
+        {
+            "type": "vcs",
+            "url" : "D:\\fontes\\bugotech\\foundation"
+        }
+    ],
 
     "minimum-stability": "dev",
     "prefer-stable"    : true
