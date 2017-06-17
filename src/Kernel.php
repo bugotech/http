@@ -108,10 +108,14 @@ class Kernel implements KernelContract
 
         $this->bootstrap();
 
-        return (new Pipeline($this->app))
-                    ->send($request)
-                    ->through($this->middleware)
-                    ->then($this->dispatchToRouter());
+        if (count($this->middleware) > 0) {
+            return (new Pipeline($this->app))
+                ->send($request)
+                ->through($this->middleware)
+                ->then($this->dispatchToRouter());
+        }
+
+        return call_user_func($this->dispatchToRouter());
     }
 
     /**
