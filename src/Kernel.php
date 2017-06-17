@@ -115,7 +115,7 @@ class Kernel implements KernelContract
                 ->then($this->dispatchToRouter());
         }
 
-        return call_user_func($this->dispatchToRouter(), [$request]);
+        return call_user_func($this->dispatchToRouter(), $request);
     }
 
     /**
