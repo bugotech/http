@@ -1,5 +1,18 @@
 <?php
 
+if (! function_exists('public_path')) {
+    /**
+     * Get the path to the public of the install.
+     *
+     * @param  string  $path
+     * @return string
+     */
+    function public_path($path = '')
+    {
+        return app()->path('public', $path);
+    }
+}
+
 if (! function_exists('router')) {
 
     /**

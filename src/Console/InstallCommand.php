@@ -44,7 +44,7 @@ class InstallCommand extends Command
      */
     public function fire()
     {
-        $dir_public = base_path('public');
+        $dir_public = public_path();
         $this->files->force($dir_public);
 
         $this->files->copy(__DIR__ . '/../../public/index.php', $this->files->combine($dir_public, 'index.php'));
