@@ -28,13 +28,6 @@
         ]
     },
 
-    "repositories": [
-        {
-            "type": "vcs",
-            "url" : "D:\\fontes\\bugotech\\foundation"
-        }
-    ],
-
     "minimum-stability": "dev",
     "prefer-stable"    : true
 }
