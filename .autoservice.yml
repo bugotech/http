@@ -1,4 +1,4 @@
-auto-service: Bugotech-Http
+auto-service: bugotech.http
 
 services:
  - \Bugotech\Http\HttpServiceProvider
