@@ -1,6 +1,5 @@
 <?php namespace Bugotech\Http;
 
-use Illuminate\Routing\Router;
 use Illuminate\Routing\RoutingServiceProvider;
 
 class HttpServiceProvider extends RoutingServiceProvider

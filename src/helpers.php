@@ -16,7 +16,7 @@ if (! function_exists('public_path')) {
 if (! function_exists('router')) {
 
     /**
-     * @return \Illuminate\Routing\Router
+     * @return \Bugotech\Http\Router
      */
     function router()
     {
