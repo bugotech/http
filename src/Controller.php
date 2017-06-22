@@ -24,7 +24,6 @@ abstract class Controller extends BaseController
             db()->commit();
 
             return $return;
-
         } catch (Exception $e) {
             db()->rollBack();
 
