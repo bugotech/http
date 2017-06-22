@@ -161,3 +161,25 @@ if (! function_exists('route')) {
         return app('url')->route($name, $parameters, $absolute);
     }
 }
+
+if (! function_exists('abort')) {
+    /**
+     * Throw an HttpException with the given data.
+     *
+     * @param  int     $code
+     * @param  string  $message
+     * @param  array   $headers
+     * @return void
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\HttpException
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    function abort($code, $message = '', array $headers = [])
+    {
+        if ($code == 404) {
+            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException($message);
+        }
+
+        throw new HttpException($code, $message, null, $headers);
+    }
+}
