@@ -19,7 +19,7 @@ abstract class Controller extends BaseController
     {
         db()->beginTransaction();
         try {
-            $return  = $callback();
+            $return = $callback();
 
             db()->commit();
 
