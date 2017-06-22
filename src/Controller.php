@@ -41,6 +41,7 @@ abstract class Controller extends BaseController
             $error = new \stdClass();
             $error->code = $e->getCode();
             $error->message = $e->getMessage();
+
             return new JsonResponse($error, 422);
         }
 
