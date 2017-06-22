@@ -10,7 +10,7 @@ class InstallCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'http:install';
+    protected $signature = 'install:http';
 
     /**
      * The console command description.
