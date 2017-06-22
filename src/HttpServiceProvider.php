@@ -32,7 +32,7 @@ class HttpServiceProvider extends RoutingServiceProvider
     protected function mapRoutes()
     {
         // Web
-        router()->group([], function (Router $router) {
+        router()->group(['middleware' => ['web']], function (Router $router) {
             $file_route = app_path('routes.php');
             if (files()->exists($file_route)) {
                 require $file_route;
@@ -40,7 +40,7 @@ class HttpServiceProvider extends RoutingServiceProvider
         });
 
         // Api
-        router()->group(['prefix' => 'api'], function (Router $router) {
+        router()->group(['middleware' => ['api'], 'prefix' => 'api'], function (Router $router) {
             $file_route = app_path('routes_api.php');
             if (files()->exists($file_route)) {
                 require $file_route;
