@@ -2,7 +2,7 @@
 
 use Exception;
 use Throwable;
-use Illuminate\Routing\Router;
+use Bugotech\Http\Router;
 use Illuminate\Routing\Pipeline;
 use Bugotech\Foundation\Application;
 use Illuminate\Contracts\Http\Kernel as KernelContract;
@@ -20,7 +20,7 @@ class Kernel implements KernelContract
     /**
      * The router instance.
      *
-     * @var \Illuminate\Routing\Router
+     * @var \Bugotech\Http\Router
      */
     protected $router;
 
