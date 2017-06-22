@@ -2,7 +2,6 @@
 
 use Exception;
 use Throwable;
-use Bugotech\Http\Router;
 use Illuminate\Routing\Pipeline;
 use Bugotech\Foundation\Application;
 use Illuminate\Contracts\Http\Kernel as KernelContract;
