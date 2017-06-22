@@ -8,14 +8,14 @@ class HttpServiceProvider extends RoutingServiceProvider
     {
         parent::register();
 
-        $this->app->alias('Illuminate\Contracts\Routing\UrlGenerator', 'url');
+        // Alias
+        $this->app->alias('\Illuminate\Contracts\Routing\UrlGenerator', 'url');
+        $this->app->alias('router', '\Bugotech\Http\Router');
 
         // Registrar comando para preparar o ambiente
         if (config('app.env') != 'production') {
             $this->commands('\Bugotech\Http\Console\InstallCommand');
         }
-
-        $this->app->alias('router', '\Illuminate\Routing\Router');
 
         // Mapear rotas
         $this->mapRoutes();
