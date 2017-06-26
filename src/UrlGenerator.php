@@ -47,7 +47,7 @@ class UrlGenerator extends \Illuminate\Routing\UrlGenerator
 
         $uri = strtr(rawurlencode($uri), $this->dontEncode);
 
-        return $absolute ? $uri : '/'.ltrim(str_replace($root, '', $uri), '/');
+        return $absolute ? $uri : '/' . ltrim(str_replace($root, '', $uri), '/');
     }
 
     /**
