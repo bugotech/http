@@ -29,8 +29,8 @@ class UrlGenerator extends \Illuminate\Routing\UrlGenerator
         // Verificar se ainda tem parametros par atraduzir
         preg_match_all('%\\{(.*?)\\}%', $route->uri(), $params, PREG_PATTERN_ORDER);
         for ($i = 0; $i < count($params[0]); $i++) {
-            $key = $params[0][$i];
-            $val = $this->getParameterContext($params[1][$i]);
+            $key = $params[1][$i];
+            $val = $this->getParameterContext($key);
             if (! is_null($val)) {
                 $parameters[$key] = $val;
             }
