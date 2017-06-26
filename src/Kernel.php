@@ -203,6 +203,8 @@ class Kernel implements KernelContract
     public function bootstrap()
     {
         $this->router = $this->app['router'];
+        $this->middlewareGroups = array_merge([], $this->middlewareGroups, config('routing.middlewareGroups', []));
+        $this->routeMiddleware = array_merge([], $this->routeMiddleware, config('routing.routeMiddleware', []));
 
         foreach ($this->middlewareGroups as $key => $middleware) {
             $this->router->middlewareGroup($key, $middleware);

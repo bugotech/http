@@ -10,6 +10,7 @@ class HttpServiceProvider extends RoutingServiceProvider
 
         // Carregar config
         $this->app->configure('session', __DIR__ . '/../config/session.php');
+        $this->app->configure('routing', __DIR__ . '/../config/routing.php');
 
         // Alias
         $this->app->alias('url', '\Illuminate\Contracts\Routing\UrlGenerator');
