@@ -26,19 +26,20 @@ class UrlGenerator extends \Illuminate\Routing\UrlGenerator
 
         $domain = $this->getRouteDomain($route, $parameters);
 
+        // Verificar se ainda tem parametros par atraduzir
+        preg_match_all('%\\{(.*?)\\}%', $route->uri(), $params, PREG_PATTERN_ORDER);
+        for ($i = 0; $i < count($params[0]); $i++) {
+            $key = $params[0][$i];
+            $val = $this->getParameterContext($params[1][$i]);
+            if (! is_null($val)) {
+                $parameters[$key] = $val;
+            }
+        }
+
         $uri = $this->addQueryString($this->trimUrl(
             $root = $this->replaceRoot($route, $domain, $parameters),
             $this->replaceRouteParameters($route->uri(), $parameters)
         ), $parameters);
-
-        // Verificar se ainda tem parametros par atraduzir
-        preg_match_all('%\\{(.*?)\\}%', $uri, $params, PREG_PATTERN_ORDER);
-        for ($i = 0; $i < count($params[0]); $i++) {
-            $val = $this->getParameterContext($params[1][$i]);
-            if (! is_null($val)) {
-                $uri = str_replace($params[0][$i], $val, $uri);
-            }
-        }
 
         // Se ainda tiver parametros gerar erro
         if (preg_match('/\{.*?\}/', $uri)) {
