@@ -51,10 +51,11 @@ class UrlGenerator extends \Illuminate\Routing\UrlGenerator
     }
 
     /**
+     * Compartilhar valor de parametro.
      * @param $name
      * @param $value
      */
-    public function addParametersContext($name, $value)
+    public function share($name, $value)
     {
         $this->parametersContext[$name] = $value;
     }
