@@ -27,10 +27,15 @@ class UrlGenerator extends \Illuminate\Routing\UrlGenerator
         $domain = $this->getRouteDomain($route, $parameters);
 
         // Verificar se ainda tem parametros par atraduzir
+        $params_orign = $parameters;
+        $parameters = [];
         preg_match_all('%\\{(.*?)\\}%', $route->uri(), $params, PREG_PATTERN_ORDER);
         for ($i = 0; $i < count($params[0]); $i++) {
             $key = $params[1][$i];
             $val = $this->getParameterContext($key);
+            if (array_key_exists($key, $params_orign)) {
+                $parameters[$key] = $params_orign[$key];
+            } else
             if (! is_null($val)) {
                 $parameters[$key] = $val;
             }
