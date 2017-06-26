@@ -1,4 +1,6 @@
 auto-service: bugotech.http
 
 services:
+ - \Illuminate\Cookie\CookieServiceProvider
+ - \Illuminate\Session\SessionServiceProvider
  - \Bugotech\Http\HttpServiceProvider

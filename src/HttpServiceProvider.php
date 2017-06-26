@@ -8,9 +8,13 @@ class HttpServiceProvider extends RoutingServiceProvider
     {
         parent::register();
 
+        // Carregar config
+        $this->app->configure('session', __DIR__ . '/../config/session.php');
+
         // Alias
         $this->app->alias('url', '\Illuminate\Contracts\Routing\UrlGenerator');
         $this->app->alias('router', '\Bugotech\Http\Router');
+        $this->app->alias('cookie', '\Illuminate\Contracts\Cookie\Factory');
 
         // Registrar comando para preparar o ambiente
         if (config('app.env') != 'production') {

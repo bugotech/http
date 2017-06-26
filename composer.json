@@ -12,11 +12,13 @@
     ],
 
     "require": {
-        "bugotech/foundation": "dev-master",
-        "illuminate/pipeline": "5.2.*",
-        "illuminate/http"    : "5.2.*",
-        "illuminate/routing" : "5.2.*",
-        "nikic/fast-route"   : "~1.0"
+        "bugotech/foundation"  : "dev-master",
+        "illuminate/pipeline"  : "5.2.*",
+        "illuminate/http"      : "5.2.*",
+        "illuminate/routing"   : "5.2.*",
+        "illuminate/cookie"    : "5.2.*",
+        "illuminate/session"   : "5.2.*",
+        "nikic/fast-route"     : "~1.0"
     },
 
     "autoload": {
