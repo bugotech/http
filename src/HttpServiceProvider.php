@@ -15,8 +15,9 @@ class HttpServiceProvider extends RoutingServiceProvider
         // Alias
         $this->app->alias('url', 'Illuminate\Contracts\Routing\UrlGenerator');
         $this->app->alias('router', 'Bugotech\Http\Router');
-        //$this->app->alias('cookie', 'Illuminate\Contracts\Cookie\Factory');
         $this->app->alias('cookie', 'Illuminate\Contracts\Cookie\QueueingFactory');
+        $this->app->addContextualBinding('Illuminate\Session\SessionManager', '$app', 'Bugotech\Foundation\Application');
+
 
         // Registrar comando para preparar o ambiente
         if (config('app.env') != 'production') {
