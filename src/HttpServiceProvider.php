@@ -18,7 +18,7 @@ class HttpServiceProvider extends RoutingServiceProvider
         $this->app->alias('cookie', 'Illuminate\Contracts\Cookie\QueueingFactory');
 
         // Alias para ajsutar problema ao carregar SessionManager
-        $this->app->addContextualBinding('Illuminate\Session\SessionManager', '$app', 'Bugotech\Foundation\Application');
+        $this->app->addContextualBinding('Illuminate\Session\SessionManager', '$app', $this->app);
 
         // Registrar comando para preparar o ambiente
         if (config('app.env') != 'production') {
