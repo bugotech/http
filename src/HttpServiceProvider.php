@@ -12,6 +12,9 @@ class HttpServiceProvider extends RoutingServiceProvider
         $this->app->configure('session', __DIR__ . '/../config/session.php');
         $this->app->configure('routing', __DIR__ . '/../config/routing.php');
 
+        // Cookie
+        $this->registerCookie();
+
         // Alias
         $this->app->alias('url', 'Illuminate\Contracts\Routing\UrlGenerator');
         $this->app->alias('router', 'Bugotech\Http\Router');
@@ -70,6 +73,15 @@ class HttpServiceProvider extends RoutingServiceProvider
             });
 
             return $url;
+        });
+    }
+
+    protected function registerCookie()
+    {
+        $this->app->singleton('cookie', function ($app) {
+            $config = $app['config']['session'];
+
+            return (new Cookie($app))->setDefaultPathAndDomain($config['path'], $config['domain'], $config['secure']);
         });
     }
 
