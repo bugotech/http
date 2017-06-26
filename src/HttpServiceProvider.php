@@ -13,10 +13,10 @@ class HttpServiceProvider extends RoutingServiceProvider
         $this->app->configure('routing', __DIR__ . '/../config/routing.php');
 
         // Alias
-        $this->app->alias('url', '\Illuminate\Contracts\Routing\UrlGenerator');
-        $this->app->alias('router', '\Bugotech\Http\Router');
-        //$this->app->alias('cookie', '\Illuminate\Contracts\Cookie\Factory');
-        $this->app->alias('cookie', '\Illuminate\Contracts\Cookie\QueueingFactory');
+        $this->app->alias('url', 'Illuminate\Contracts\Routing\UrlGenerator');
+        $this->app->alias('router', 'Bugotech\Http\Router');
+        //$this->app->alias('cookie', 'Illuminate\Contracts\Cookie\Factory');
+        $this->app->alias('cookie', 'Illuminate\Contracts\Cookie\QueueingFactory');
 
         // Registrar comando para preparar o ambiente
         if (config('app.env') != 'production') {
