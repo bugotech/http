@@ -16,6 +16,7 @@ class HttpServiceProvider extends RoutingServiceProvider
         $this->registerCookie();
 
         // Alias
+        $this->app->alias('request', 'Illuminate\Http\Request');
         $this->app->alias('url', 'Illuminate\Contracts\Routing\UrlGenerator');
         $this->app->alias('router', 'Bugotech\Http\Router');
         $this->app->alias('cookie', 'Illuminate\Contracts\Cookie\QueueingFactory');
