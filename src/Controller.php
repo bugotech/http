@@ -50,7 +50,7 @@ abstract class Controller extends BaseController
             return $e;
         }
 
-        // Verificar se já eh um HttpException
+        // Verificar se jÃ¡ eh um HttpException
         if (! ($e instanceof HttpException)) {
             $e = new HttpException(request(), $e->getMessage(), $e->getCode(), $e->getPrevious());
         }
