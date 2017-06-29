@@ -4,14 +4,12 @@ use Closure;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Bugotech\Http\Exceptions\HttpException;
-use Bugotech\Foundation\Support\Validates;
+use Bugotech\Foundation\Support\Validator;
 use Illuminate\Routing\Controller as BaseController;
 use Symfony\Component\HttpFoundation\Response as BaseResponse;
 
 abstract class Controller extends BaseController
 {
-    use Validates;
-
     /**
      * Transacoes.
      *
@@ -59,5 +57,23 @@ abstract class Controller extends BaseController
         }
 
         return $e->getResponse();
+    }
+
+    /**
+     * Validar valores pela regra.
+     *
+     * @param array $rules
+     * @param array|null $values
+     * @return bool
+     */
+    protected function validate(array $rules, $values = null)
+    {
+        // Se os valores forem nulos, buscar no request
+        if (is_null($values)) {
+            $values = request()->all();
+        }
+
+        // Validar valores pela regra
+        return Validator::validate($values, $rules);
     }
 }
