@@ -52,10 +52,10 @@ class HttpException extends Exception
      */
     protected function getErrors()
     {
-        $arr = ['error' => $this->getMessage()];
+        $arr = ['error' => [$this->getMessage()]];
 
         if (count($this->attrs) > 0) {
-            $arr['attrs'] = $this->getAttrs();
+            $arr['error'][] = $this->getAttrs();
         }
 
         return $arr;
