@@ -11,16 +11,23 @@ class HttpException extends Exception
     protected $request;
 
     /**
+     * @var array
+     */
+    protected $attrs = [];
+
+    /**
      * @param Request $request
      * @param string $message
      * @param int $code
      * @param Exception $previous
+     * @param array $attrs
      */
-    public function __construct(Request $request, $message = '', $code = 0, Exception $previous = null)
+    public function __construct(Request $request, $message = '', $code = 0, Exception $previous = null, array $attrs = [])
     {
         parent::__construct($message, $code, $previous);
 
         $this->request = $request;
+        $this->attrs = $attrs;
     }
 
     /**
@@ -45,7 +52,22 @@ class HttpException extends Exception
      */
     protected function getErrors()
     {
-        return ['error' => $this->getMessage()];
+        $arr = ['error' => $this->getMessage()];
+
+        if (count($this->attrs) > 0) {
+            $arr['attrs'] = $this->getAttrs();
+        }
+
+        return $arr;
+    }
+
+    /**
+     * Lista de erros por atributo.
+     * @return array
+     */
+    public function getAttrs()
+    {
+        return $this->attrs;
     }
 
     /**

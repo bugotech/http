@@ -5,6 +5,7 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Bugotech\Http\Exceptions\HttpException;
 use Bugotech\Foundation\Support\Validator;
+use Bugotech\Foundation\Support\ExceptionAttrs;
 use Illuminate\Routing\Controller as BaseController;
 use Symfony\Component\HttpFoundation\Response as BaseResponse;
 
@@ -53,7 +54,11 @@ abstract class Controller extends BaseController
 
         // Verificar se já eh um HttpException
         if (! ($e instanceof HttpException)) {
-            $e = new HttpException(request(), $e->getMessage(), $e->getCode(), $e->getPrevious());
+            $attrs = [];
+            if ($e instanceof ExceptionAttrs) {
+                $attrs = $e->getAttrs();
+            }
+            $e = new HttpException(request(), $e->getMessage(), $e->getCode(), $e->getPrevious(), $attrs);
         }
 
         return $e->getResponse();
