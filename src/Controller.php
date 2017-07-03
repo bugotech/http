@@ -56,7 +56,7 @@ abstract class Controller extends BaseController
         if (! ($e instanceof HttpException)) {
             $attrs = [];
             if ($e instanceof ExceptionAttrs) {
-                $attrs = $e->getAttrs();
+                $attrs = $e->getAttrsCustom();
             }
             $e = new HttpException(request(), $e->getMessage(), $e->getCode(), $e->getPrevious(), $attrs);
         }
@@ -69,9 +69,10 @@ abstract class Controller extends BaseController
      *
      * @param array $rules
      * @param array|null $values
+     * @param array $customAttrs
      * @return bool
      */
-    protected function validate(array $rules, $values = null)
+    protected function validate(array $rules, $values = null, array $customAttrs = [])
     {
         // Se os valores forem nulos, buscar no request
         if (is_null($values)) {
@@ -79,6 +80,6 @@ abstract class Controller extends BaseController
         }
 
         // Validar valores pela regra
-        return Validator::validate($values, $rules);
+        return Validator::validate($values, $rules, $customAttrs);
     }
 }
