@@ -2,10 +2,10 @@
 
 use Closure;
 use Exception;
-use Illuminate\Http\JsonResponse;
-use Bugotech\Http\Exceptions\HttpException;
 use Bugotech\Validator\Validator;
+use Illuminate\Http\JsonResponse;
 use Bugotech\Validator\ExceptionAttrs;
+use Bugotech\Http\Exceptions\HttpException;
 use Illuminate\Routing\Controller as BaseController;
 use Symfony\Component\HttpFoundation\Response as BaseResponse;
 

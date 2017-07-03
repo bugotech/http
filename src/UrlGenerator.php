@@ -35,8 +35,7 @@ class UrlGenerator extends \Illuminate\Routing\UrlGenerator
             $val = $this->getParameterContext($key);
             if (array_key_exists($key, $params_orign)) {
                 $parameters[$key] = $params_orign[$key];
-            } else
-            if (! is_null($val)) {
+            } elseif (! is_null($val)) {
                 $parameters[$key] = $val;
             }
         }
