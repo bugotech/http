@@ -16,18 +16,24 @@ class HttpException extends Exception
     protected $attrs = [];
 
     /**
+     * @var array
+     */
+    protected $attrsCustom = [];
+
+    /**
      * @param Request $request
      * @param string $message
      * @param int $code
      * @param Exception $previous
      * @param array $attrs
      */
-    public function __construct(Request $request, $message = '', $code = 0, Exception $previous = null, array $attrs = [])
+    public function __construct(Request $request, $message = '', $code = 0, Exception $previous = null, array $attrs = [], array $attrsCustom = [])
     {
         parent::__construct($message, $code, $previous);
 
         $this->request = $request;
         $this->attrs = $attrs;
+        $this->attrsCustom = array_merge([], $attrs, $attrsCustom);
     }
 
     /**
@@ -58,6 +64,10 @@ class HttpException extends Exception
             $arr['attrs'] = $this->getAttrs();
         }
 
+        if (count($this->attrsCustom) > 0) {
+            $arr['attrscustom'] = $this->getAttrsCustom();
+        }
+
         return $arr;
     }
 
@@ -68,6 +78,15 @@ class HttpException extends Exception
     public function getAttrs()
     {
         return $this->attrs;
+    }
+
+    /**
+     * Lista de erros por atributo customizados.
+     * @return array
+     */
+    public function getAttrsCustom()
+    {
+        return $this->attrsCustom;
     }
 
     /**

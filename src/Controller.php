@@ -55,10 +55,12 @@ abstract class Controller extends BaseController
         // Verificar se já eh um HttpException
         if (! ($e instanceof HttpException)) {
             $attrs = [];
+            $attrsCustom = [];
             if ($e instanceof ExceptionAttrs) {
-                $attrs = $e->getAttrsCustom();
+                $attrs = $e->getAttrs();
+                $attrsCustom = $e->getAttrsCustom();
             }
-            $e = new HttpException(request(), $e->getMessage(), $e->getCode(), $e->getPrevious(), $attrs);
+            $e = new HttpException(request(), $e->getMessage(), $e->getCode(), $e->getPrevious(), $attrs, $attrsCustom);
         }
 
         return $e->getResponse();
