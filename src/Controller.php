@@ -4,8 +4,8 @@ use Closure;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Bugotech\Http\Exceptions\HttpException;
-use Bugotech\Foundation\Support\Validator;
-use Bugotech\Foundation\Support\ExceptionAttrs;
+use Bugotech\Validator\Validator;
+use Bugotech\Validator\ExceptionAttrs;
 use Illuminate\Routing\Controller as BaseController;
 use Symfony\Component\HttpFoundation\Response as BaseResponse;
 
