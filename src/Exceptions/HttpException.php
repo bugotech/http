@@ -33,7 +33,7 @@ class HttpException extends Exception
 
         $this->request = $request;
         $this->attrs = $attrs;
-        $this->attrsCustom = array_merge([], $attrs, $attrsCustom);
+        $this->attrsCustom = (count($attrsCustom) == 0) ? $attrs : $attrsCustom;
     }
 
     /**
