@@ -41,10 +41,14 @@ abstract class Controller extends BaseController
      */
     protected function exceptions(Exception $e)
     {
-        if ((request()->ajax() && ! request()->pjax()) || request()->wantsJson()) {
+
+        if ($this->isApi()) {
             $error = new \stdClass();
             $error->code = $e->getCode();
             $error->message = $e->getMessage();
+            if ($e instanceof ExceptionAttrs) {
+                $error->attrs = $e->getAttrsCustom();
+            }
 
             return new JsonResponse($error, 422);
         }
@@ -85,5 +89,18 @@ abstract class Controller extends BaseController
 
         // Validar valores pela regra
         return Validator::validate($values, $rules, $customAttrs);
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isApi()
+    {
+        if ((request()->ajax() && ! request()->pjax()) || request()->wantsJson()) {
+            return true;
+        }
+
+        $list = router()->current()->middleware();
+        return in_array('api', $list);
     }
 }
