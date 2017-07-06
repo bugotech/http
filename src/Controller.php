@@ -41,7 +41,6 @@ abstract class Controller extends BaseController
      */
     protected function exceptions(Exception $e)
     {
-
         if ($this->isApi()) {
             $error = new \stdClass();
             $error->code = $e->getCode();
@@ -101,6 +100,7 @@ abstract class Controller extends BaseController
         }
 
         $list = router()->current()->middleware();
+
         return in_array('api', $list);
     }
 }
