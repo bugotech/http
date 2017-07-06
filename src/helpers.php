@@ -38,10 +38,10 @@ if (! function_exists('url')) {
     function url($path = null, $parameters = [], $secure = null)
     {
         if (is_null($path)) {
-            return app('\Illuminate\Contracts\Routing\UrlGenerator');
+            return app('Illuminate\Contracts\Routing\UrlGenerator');
         }
 
-        return app('\Illuminate\Contracts\Routing\UrlGenerator')->to($path, $parameters, $secure);
+        return app('Illuminate\Contracts\Routing\UrlGenerator')->to($path, $parameters, $secure);
     }
 }
 
@@ -137,7 +137,7 @@ if (! function_exists('response')) {
      */
     function response($content = '', $status = 200, array $headers = [])
     {
-        $factory = app('\Illuminate\Contracts\Routing\ResponseFactory');
+        $factory = app('Illuminate\Contracts\Routing\ResponseFactory');
 
         if (func_num_args() === 0) {
             return $factory;
@@ -199,7 +199,7 @@ if (! function_exists('cookie')) {
      */
     function cookie($name = null, $value = null, $minutes = 0, $path = null, $domain = null, $secure = false, $httpOnly = true)
     {
-        $cookie = app('\Illuminate\Contracts\Cookie\Factory');
+        $cookie = app('Illuminate\Contracts\Cookie\Factory');
 
         if (is_null($name)) {
             return $cookie;
