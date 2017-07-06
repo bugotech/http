@@ -11,6 +11,8 @@ use Symfony\Component\HttpFoundation\Response as BaseResponse;
 
 abstract class Controller extends BaseController
 {
+    use JsonHttp;
+
     /**
      * Transacoes.
      *
