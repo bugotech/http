@@ -49,7 +49,7 @@ abstract class Controller extends BaseController
                 $error->attrs = $e->getAttrsCustom();
             }
 
-            return new JsonResponse($error, 422);
+            return $this->json($error);
         }
 
         // Verificar se ja eh um Response
