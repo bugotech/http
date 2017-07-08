@@ -195,7 +195,7 @@ if (! function_exists('cookie')) {
      * @param  string  $domain
      * @param  bool    $secure
      * @param  bool    $httpOnly
-     * @return \Symfony\Component\HttpFoundation\Cookie
+     * @return \Bugotech\Http\Cookie
      */
     function cookie($name = null, $value = null, $minutes = 0, $path = null, $domain = null, $secure = false, $httpOnly = true)
     {
