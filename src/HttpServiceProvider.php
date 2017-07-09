@@ -1,6 +1,7 @@
 <?php namespace Bugotech\Http;
 
 use Illuminate\Routing\RoutingServiceProvider;
+use Illuminate\Http\Request;
 
 class HttpServiceProvider extends RoutingServiceProvider
 {
@@ -32,6 +33,9 @@ class HttpServiceProvider extends RoutingServiceProvider
 
         // Mapear rotas
         $this->mapRoutes();
+
+        // Share request in routes
+        $this->shareRequestInUrl();
     }
 
     protected function registerRouter()
@@ -107,6 +111,18 @@ class HttpServiceProvider extends RoutingServiceProvider
                     require $file_route;
                 }
             });
+        });
+    }
+
+    /**
+     * Register request params in url.
+     */
+    protected function shareRequestInUrl()
+    {
+        $this->app['events']->listen('kernel.handling', function (Request $request) {
+            foreach ($request->attributes as $k => $v) {
+                $this->app['url']->share($k, $v);
+            }
         });
     }
 }
