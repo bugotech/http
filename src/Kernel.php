@@ -64,6 +64,8 @@ class Kernel implements KernelContract
     public function handle($request)
     {
         try {
+            $this->app['events']->fire('kernel.handling', [$request]);
+
             $request->enableHttpMethodParameterOverride();
 
             $response = $this->sendRequestThroughRouter($request);

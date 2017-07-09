@@ -91,20 +91,22 @@ class HttpServiceProvider extends RoutingServiceProvider
      */
     protected function mapRoutes()
     {
-        // Web
-        router()->group(['middleware' => ['web']], function (Router $router) {
-            $file_route = app_path('routes.php');
-            if (files()->exists($file_route)) {
-                require $file_route;
-            }
-        });
+        $this->app['events']->listen('kernel.handling', function () {
+            // Web
+            router()->group(['middleware' => ['web']], function (Router $router) {
+                $file_route = app_path('routes.php');
+                if (files()->exists($file_route)) {
+                    require $file_route;
+                }
+            });
 
-        // Api
-        router()->group(['middleware' => ['api'], 'prefix' => 'api'], function (Router $router) {
-            $file_route = app_path('routes_api.php');
-            if (files()->exists($file_route)) {
-                require $file_route;
-            }
+            // Api
+            router()->group(['middleware' => ['api'], 'prefix' => 'api'], function (Router $router) {
+                $file_route = app_path('routes_api.php');
+                if (files()->exists($file_route)) {
+                    require $file_route;
+                }
+            });
         });
     }
 }
