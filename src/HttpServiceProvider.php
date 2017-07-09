@@ -1,6 +1,7 @@
 <?php namespace Bugotech\Http;
 
 use Illuminate\Http\Request;
+use Illuminate\Routing\Events\RouteMatched;
 use Illuminate\Routing\RoutingServiceProvider;
 
 class HttpServiceProvider extends RoutingServiceProvider
@@ -119,8 +120,8 @@ class HttpServiceProvider extends RoutingServiceProvider
      */
     protected function shareRequestInUrl()
     {
-        $this->app['events']->listen('kernel.handling', function (Request $request) {
-            foreach ($request->attributes as $k => $v) {
+        $this->app['events']->listen('Illuminate\Routing\Events\RouteMatched', function (RouteMatched $event) {
+            foreach ($event->route->parameters() as $k => $v) {
                 $this->app['url']->share($k, $v);
             }
         });
