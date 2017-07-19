@@ -51,10 +51,7 @@ trait WizardTrait
         $view = view($view_id);
         $view->with('steps', $this->steps);
         $view->with('step', $this->steps->current());
-
-        foreach ($this->viewParams as $k => $v) {
-            $view->with($k, $v);
-        }
+        $view->with('step', $this->viewParams);
 
         return $view;
     }
