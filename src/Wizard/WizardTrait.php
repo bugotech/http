@@ -16,7 +16,12 @@ trait WizardTrait
      * Nome da visao dos passos.
      * @var string
      */
-    protected $viewName;
+    protected $prefixViewName;
+
+    /**
+     * @var array
+     */
+    protected $viewParams = [];
 
     /**
      * Preparar passos.
@@ -33,12 +38,12 @@ trait WizardTrait
     {
         // Carregar step atual
         $step = router()->current()->parameter('step', $this->steps->firstId());
-        if (! array_key_exists($step, $this->steps)) {
+        if (! $this->steps->exists($step)) {
             error('Step "%s" not found', $step);
         }
 
         // Carregar view
-        $view_id = sprintf('%s-%s', $this->viewName, $step);
+        $view_id = sprintf('%s-%s', $this->prefixViewName, $step);
         if (! view()->exists($view_id)) {
             error('View of step "%s" not found', $view_id);
         }
@@ -46,6 +51,10 @@ trait WizardTrait
         $view = view($view_id);
         $view->with('steps', $this->steps);
         $view->with('step', $this->steps->current());
+
+        foreach ($this->params as $k => $v) {
+            $view->with($k, $v);
+        }
 
         return $view;
     }
