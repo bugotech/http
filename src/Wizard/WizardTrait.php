@@ -51,7 +51,7 @@ trait WizardTrait
         $step = $this->steps->current();
 
         // Carregar view
-        $view_id = sprintf('%s.%s', $this->prefixViewName, $step);
+        $view_id = sprintf('%s.%s', $this->prefixViewName, $step->key);
         if (! view()->exists($view_id)) {
             error('View of step "%s" not found', $view_id);
         }

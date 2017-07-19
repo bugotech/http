@@ -47,6 +47,9 @@ class Steps implements ArrayAccess
         return true;
     }
 
+    /**
+     * @return array
+     */
     public function all()
     {
         return $this->steps;
