@@ -47,6 +47,19 @@ class Steps implements ArrayAccess
         return true;
     }
 
+    public function all()
+    {
+        return $this->steps;
+    }
+
+    /**
+     * @return int
+     */
+    public function count()
+    {
+        return count($this->steps);
+    }
+
     /**
      * Step atual.
      * @return Step
