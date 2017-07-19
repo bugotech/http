@@ -23,13 +23,16 @@ trait WizardTrait
      */
     protected $viewParams = [];
 
+    public function __construct()
+    {
+        $this->steps = new Steps();
+    }
+
     /**
      * Preparar passos.
      */
     protected function prepareSteps()
     {
-        $this->steps = new Steps();
-
         $step = router()->current()->parameter('step', $this->steps->firstId());
         if (! $this->steps->exists($step)) {
             error('Step "%s" not found', $step);
