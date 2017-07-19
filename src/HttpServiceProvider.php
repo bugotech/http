@@ -100,6 +100,12 @@ class HttpServiceProvider extends RoutingServiceProvider
     protected function mapRoutes()
     {
         $this->app['events']->listen('kernel.handling', function () {
+            // Gatilho para arquivo routes.php
+            $file_route = app_path('routes.php');
+            if (files()->exists($file_route)) {
+                require $file_route;
+            }
+
             // Web
             router()->group(['middleware' => ['web']], function (Router $router) {
                 event()->fire(new PublicRegisterRoutes($router));
@@ -111,12 +117,6 @@ class HttpServiceProvider extends RoutingServiceProvider
             router()->group(['middleware' => ['api'], 'prefix' => 'api'], function (Router $router) {
                 event()->fire(new ApiRegisterRoutes($router));
             });
-
-            // Gatilho para arquivo routes.php
-            $file_route = app_path('routes.php');
-            if (files()->exists($file_route)) {
-                require $file_route;
-            }
         });
     }
 
