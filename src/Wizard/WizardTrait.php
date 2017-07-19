@@ -52,7 +52,7 @@ trait WizardTrait
         $view->with('steps', $this->steps);
         $view->with('step', $this->steps->current());
 
-        foreach ($this->params as $k => $v) {
+        foreach ($this->viewParams as $k => $v) {
             $view->with($k, $v);
         }
 
