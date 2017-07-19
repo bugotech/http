@@ -18,36 +18,40 @@ class Router extends \Illuminate\Routing\Router
     /**
      * Registrar rotas publicas.
      * @param callable $callback
+     * @param int $priority
      */
-    public function onPublic(Closure $callback)
+    public function onPublic(Closure $callback, $priority = 0)
     {
-        event()->listen('Bugotech\Http\Events\PublicRegisterRoutes', $callback);
+        event()->listen('Bugotech\Http\Events\PublicRegisterRoutes', $callback, $priority);
     }
 
     /**
      * Registrar rotas publicas com inquilino definido.
      * @param callable $callback
+     * @param int $priority
      */
-    public function onPublicTenant(Closure $callback)
+    public function onPublicTenant(Closure $callback, $priority = 0)
     {
-        event()->listen('Bugotech\Http\Events\PublicTenantRegisterRoutes', $callback);
+        event()->listen('Bugotech\Http\Events\PublicTenantRegisterRoutes', $callback, $priority);
     }
 
     /**
      * Registrar rotas privadas com inquilino definido.
      * @param callable $callback
+     * @param int $priority
      */
-    public function onPrivate(Closure $callback)
+    public function onPrivate(Closure $callback, $priority = 0)
     {
-        event()->listen('Bugotech\Http\Events\PrivateRegisterRoutes', $callback);
+        event()->listen('Bugotech\Http\Events\PrivateRegisterRoutes', $callback, $priority);
     }
 
     /**
      * Registrar rotas API.
      * @param callable $callback
+     * @param int $priority
      */
-    public function onApi(Closure $callback)
+    public function onApi(Closure $callback, $priority = 0)
     {
-        event()->listen('Bugotech\Http\Events\ApiRegisterRoutes', $callback);
+        event()->listen('Bugotech\Http\Events\ApiRegisterRoutes', $callback, $priority);
     }
 }
