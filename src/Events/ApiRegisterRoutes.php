@@ -3,7 +3,6 @@
 /**
  * Class ApiRegisterRoutes.
  * Alias: RegisterRoutes.
- * @package Bugotech\Http\Events
  */
 class ApiRegisterRoutes extends RegisterRoutes
 {

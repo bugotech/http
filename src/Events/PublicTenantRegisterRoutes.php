@@ -3,7 +3,6 @@
 /**
  * Class PublicTenantRegisterRoutes.
  * Alias: RegisterRoutes.
- * @package Bugotech\Http\Events
  */
 class PublicTenantRegisterRoutes extends RegisterRoutes
 {

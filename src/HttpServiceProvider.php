@@ -1,9 +1,9 @@
 <?php namespace Bugotech\Http;
 
-use Illuminate\Routing\Events\RouteMatched;
 use Bugotech\Http\Events\ApiRegisterRoutes;
-use Illuminate\Routing\RoutingServiceProvider;
+use Illuminate\Routing\Events\RouteMatched;
 use Bugotech\Http\Events\PublicRegisterRoutes;
+use Illuminate\Routing\RoutingServiceProvider;
 use Bugotech\Http\Events\PrivateRegisterRoutes;
 use Bugotech\Http\Events\PublicTenantRegisterRoutes;
 
@@ -111,6 +111,12 @@ class HttpServiceProvider extends RoutingServiceProvider
             router()->group(['middleware' => ['api'], 'prefix' => 'api'], function (Router $router) {
                 event()->fire(new ApiRegisterRoutes($router));
             });
+
+            // Gatilho para arquivo routes.php
+            $file_route = app_path('routes.php');
+            if (files()->exists($file_route)) {
+                require $file_route;
+            }
         });
     }
 
