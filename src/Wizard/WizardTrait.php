@@ -29,6 +29,12 @@ trait WizardTrait
     protected function prepareSteps()
     {
         $this->steps = new Steps();
+
+        $step = router()->current()->parameter('step', $this->steps->firstId());
+        if (! $this->steps->exists($step)) {
+            error('Step "%s" not found', $step);
+        }
+        $this->steps->setCurrent($step);
     }
 
     /**
@@ -37,10 +43,7 @@ trait WizardTrait
     public function getSteps()
     {
         // Carregar step atual
-        $step = router()->current()->parameter('step', $this->steps->firstId());
-        if (! $this->steps->exists($step)) {
-            error('Step "%s" not found', $step);
-        }
+        $step = $this->steps->current();
 
         // Carregar view
         $view_id = sprintf('%s.%s', $this->prefixViewName, $step);
@@ -50,8 +53,8 @@ trait WizardTrait
 
         $view = view($view_id);
         $view->with('steps', $this->steps);
-        $view->with('step', $this->steps->current());
-        $view->with('step', $this->viewParams);
+        $view->with('step', $step);
+        $view->with($this->viewParams);
 
         return $view;
     }
