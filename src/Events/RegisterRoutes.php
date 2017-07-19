@@ -8,8 +8,11 @@ abstract class RegisterRoutes extends Event
     /**
      * @var Router
      */
-    protected $router;
+    public $router;
 
+    /**
+     * @param Router $router
+     */
     public function __construct(Router $router)
     {
         $this->router = $router;
