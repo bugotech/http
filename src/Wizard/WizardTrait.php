@@ -45,6 +45,8 @@ trait WizardTrait
      */
     public function getSteps()
     {
+        $this->prepareSteps();
+
         // Carregar step atual
         $step = $this->steps->current();
 
@@ -64,6 +66,7 @@ trait WizardTrait
 
     public function setSteps()
     {
+        $this->prepareSteps();
         //..
     }
 }
