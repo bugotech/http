@@ -4,7 +4,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 /**
- * Class WizardTrait
+ * Class WizardTrait.
  * @see Controller
  */
 trait WizardTrait
