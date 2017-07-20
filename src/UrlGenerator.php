@@ -31,7 +31,7 @@ class UrlGenerator extends \Illuminate\Routing\UrlGenerator
         $parameters = [];
         preg_match_all('%\\{(.*?)\\}%', $route->uri(), $params, PREG_PATTERN_ORDER);
         for ($i = 0; $i < count($params[0]); $i++) {
-            $key = $params[1][$i];
+            $key = str_replace('?', '', $params[1][$i]);
             $val = $this->getParameterContext($key);
             if (array_key_exists($key, $params_orign)) {
                 $parameters[$key] = $params_orign[$key];
