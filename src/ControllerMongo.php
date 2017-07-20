@@ -11,13 +11,13 @@ abstract class ControllerMongo extends Controller
      * @param callable $callback
      * @return \Illuminate\Http\RedirectResponse|mixed
      */
-    protected function transaction(\Closure $callback)
+    protected function transaction(Closure $callback)
     {
         try {
             $return = $callback();
 
             return $return;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->exceptions($e);
         }
     }

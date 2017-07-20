@@ -1,7 +1,7 @@
 <?php namespace Bugotech\Http\Wizard;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 
 /**
  * Class WizardTrait
@@ -47,7 +47,7 @@ trait WizardTrait
     {
         // Carregar Step atual.
         if (request()->isMethod('post')) {
-            $step  = request()->get('step', $this->steps->firstId());
+            $step = request()->get('step', $this->steps->firstId());
         } else {
             $step = router()->current()->parameter('step', $this->steps->firstId());
         }

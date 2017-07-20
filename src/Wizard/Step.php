@@ -52,11 +52,11 @@ class Step
             return false;
         }
 
-        return ($curr->key == $this->key);
+        return $curr->key == $this->key;
     }
 
     /**
-     * URL do passo
+     * URL do passo.
      * @return string
      */
     public function url($method = 'get')
@@ -87,10 +87,10 @@ class Step
         $i = array_search($this->key, $keys);
 
         if (is_null($i)) {
-            return null;
+            return;
         }
         if (! isset($keys[$i + 1])) {
-            return null;
+            return;
         }
 
         return $this->steps->offsetGet($keys[$i + 1]);
@@ -107,10 +107,10 @@ class Step
         $i = array_search($this->key, $keys);
 
         if (is_null($i)) {
-            return null;
+            return;
         }
         if (! isset($keys[$i - 1])) {
-            return null;
+            return;
         }
 
         return $this->steps->offsetGet($keys[$i - 1]);
