@@ -48,4 +48,55 @@ class Step
 
         return ($curr->key == $this->key);
     }
+
+    /**
+     * URL do passo
+     * @return string
+     */
+    public function url($method = 'get')
+    {
+        $id = sprintf('%s.%s', $this->steps->getPrefixRoute(), $method);
+
+        return route($id, ['step' => $this->key]);
+    }
+
+    /**
+     * Próximo passo.
+     *
+     * @return Step|null
+     */
+    public function next()
+    {
+        $keys = array_keys($this->steps->all());
+        $i = array_search($this->key, $keys);
+
+        if (is_null($i)) {
+            return null;
+        }
+        if (! isset($keys[$i + 1])) {
+            return null;
+        }
+
+        return $this->steps->offsetGet($keys[$i + 1]);
+    }
+
+    /**
+     * Passo anterior.
+     *
+     * @return Step|null
+     */
+    public function back()
+    {
+        $keys = array_keys($this->steps->all());
+        $i = array_search($this->key, $keys);
+
+        if (is_null($i)) {
+            return null;
+        }
+        if (! isset($keys[$i - 1])) {
+            return null;
+        }
+
+        return $this->steps->offsetGet($keys[$i - 1]);
+    }
 }

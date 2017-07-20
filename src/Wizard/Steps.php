@@ -17,6 +17,11 @@ class Steps implements ArrayAccess
     protected $current;
 
     /**
+     * @var string
+     */
+    protected $prefixRoute;
+
+    /**
      * Add step in list.
      *
      * @param $key
@@ -45,6 +50,25 @@ class Steps implements ArrayAccess
         $this->current = $this->steps[$current];
 
         return true;
+    }
+
+    /**
+     * @param $prefix
+     * @return $this
+     */
+    public function setPrefixRoute($prefix)
+    {
+        $this->prefixRoute = $prefix;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrefixRoute()
+    {
+        return $this->prefixRoute;
     }
 
     /**

@@ -13,16 +13,25 @@ trait WizardTrait
     protected $steps;
 
     /**
-     * Nome da visao dos passos.
+     * Prefixo do nome da visao dos passos.
      * @var string
      */
     protected $prefixViewName;
+
+    /**
+     * Prefixo da rota *.get e *.post.
+     * @var string
+     */
+    protected $prefixRoute;
 
     /**
      * @var array
      */
     protected $viewParams = [];
 
+    /**
+     * Contructor.
+     */
     public function __construct()
     {
         $this->steps = new Steps();
@@ -38,6 +47,7 @@ trait WizardTrait
             error('Step "%s" not found', $step);
         }
         $this->steps->setCurrent($step);
+        $this->steps->setPrefixRoute($this->prefixRoute);
     }
 
     /**
