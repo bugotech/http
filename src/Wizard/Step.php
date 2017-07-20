@@ -23,16 +23,22 @@ class Step
     public $desc = '';
 
     /**
+     * @var array
+     */
+    public $validates = [];
+
+    /**
      * @param $key
      * @param $title
      * @param $desc
      */
-    public function __construct($steps, $key, $title, $desc)
+    public function __construct($steps, $key, $title, $desc, array $validates = [])
     {
         $this->steps = $steps;
         $this->key = $key;
         $this->title = $title;
         $this->desc = $desc;
+        $this->validates = $validates;
     }
 
     /**

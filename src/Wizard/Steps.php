@@ -27,11 +27,12 @@ class Steps implements ArrayAccess
      * @param $key
      * @param $title
      * @param $desc
+     * @param array $validates
      * @return Step
      */
-    public function add($key, $title, $desc)
+    public function add($key, $title, $desc, array $validates = [])
     {
-        return $this->steps[$key] = new Step($this, $key, $title, $desc);
+        return $this->steps[$key] = new Step($this, $key, $title, $desc, $validates);
     }
 
     /**

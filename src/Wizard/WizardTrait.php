@@ -1,5 +1,8 @@
 <?php namespace Bugotech\Http\Wizard;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+
 /**
  * Class WizardTrait
  * @see Controller
@@ -79,9 +82,31 @@ trait WizardTrait
         return $view;
     }
 
-    public function setSteps()
+    /**
+     * @param Request $request
+     * @return mixed
+     */
+    public function setSteps(Request $request)
     {
         $this->prepareSteps();
-        //..
+
+        // Carregar step atual
+        $step = $this->steps->current();
+
+        return $this->transaction(function () use ($request, $step) {
+
+            // Validar inputs
+            if (count($step->validates) > 0) {
+                $this->validate($step->validates);
+            }
+
+            // Exeutar methodo do step
+            $method = sprintf('postStep%s', Str::studly($step->key));
+            if (! method_exists($this, $method)) {
+                error('Step method "%s" not found', $step->key);
+            }
+
+            return call_user_func_array([$this, $method], [$request, $step]);
+        });
     }
 }
