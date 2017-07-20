@@ -67,6 +67,16 @@ class Step
     }
 
     /**
+     * Redirecionar para a URL do passo.
+     * @param string $method
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function redirect($method = 'get')
+    {
+        return redirect($this->url($method));
+    }
+
+    /**
      * Próximo passo.
      *
      * @return Step|null
