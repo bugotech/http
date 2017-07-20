@@ -42,7 +42,12 @@ trait WizardTrait
      */
     protected function prepareSteps()
     {
-        $step = router()->current()->parameter('step', $this->steps->firstId());
+        // Carregar Step atual.
+        if (request()->isMethod('post')) {
+            $step  = request()->get('step', $this->steps->firstId());
+        } else {
+            $step = router()->current()->parameter('step', $this->steps->firstId());
+        }
         if (! $this->steps->exists($step)) {
             error('Step "%s" not found', $step);
         }
