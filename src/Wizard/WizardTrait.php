@@ -1,5 +1,7 @@
 <?php namespace Bugotech\Http\Wizard;
 
+use Bugotech\Db\FlowModel;
+use Bugotech\Db\Flow\Step;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
@@ -10,10 +12,16 @@ use Illuminate\Http\Request;
 trait WizardTrait
 {
     /**
-     * Lista de passos.
-     * @var Steps
+     * Model flow
+     * @var FlowModel
      */
-    protected $steps;
+    protected $model;
+
+    /**
+     * Nome da classe do model.
+     * @var string
+     */
+    protected $modelName = '';
 
     /**
      * Prefixo do nome da visao dos passos.
@@ -33,40 +41,43 @@ trait WizardTrait
     protected $viewParams = [];
 
     /**
-     * Contructor.
+     * Retorna o model.
+     * @return FlowModel
      */
-    public function __construct()
+    public function model()
     {
-        $this->steps = new Steps();
+        if (! is_null($this->model)) {
+            return $this->model;
+        }
+
+        return $this->model = app($this->modelName);
     }
 
     /**
-     * Preparar passos.
+     * Define com step atual e retornal o objeto
+     * @param $step
+     * @return Step
      */
-    protected function prepareSteps()
+    protected function step($step)
     {
-        // Carregar Step atual.
-        if (request()->isMethod('post')) {
-            $step = request()->get('step', $this->steps->firstId());
-        } else {
-            $step = router()->current()->parameter('step', $this->steps->firstId());
-        }
-        if (! $this->steps->exists($step)) {
+        if (! $this->model()->steps->exists($step)) {
             error('Step "%s" not found', $step);
         }
-        $this->steps->setCurrent($step);
-        $this->steps->setPrefixRoute($this->prefixRoute);
+
+        $this->model()->steps->setCurrent($step);
+
+        return $this->model()->steps->current();
     }
 
     /**
-     * @return mixed
+     * Retorna a view do step.
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function getSteps()
     {
-        $this->prepareSteps();
-
-        // Carregar step atual
-        $step = $this->steps->current();
+        // Carregar step do conexto e atual
+        $step = router()->current()->parameter('step', $this->model()->steps->firstId());
+        $step = $this->step($step);
 
         // Carregar view
         $view_id = sprintf('%s.%s', $this->prefixViewName, $step->key);
@@ -75,9 +86,12 @@ trait WizardTrait
         }
 
         $view = view($view_id);
-        $view->with('steps', $this->steps);
+        $view->with('steps', $this->model()->steps);
         $view->with('step', $step);
         $view->with($this->viewParams);
+
+        $view->with('step_url', $this->stepUrl);
+        $view->with('step_redirect', $this->stepRedirect);
 
         return $view;
     }
@@ -88,12 +102,11 @@ trait WizardTrait
      */
     public function setSteps(Request $request)
     {
-        $this->prepareSteps();
+        return $this->transaction(function () use ($request) {
 
-        // Carregar step atual
-        $step = $this->steps->current();
-
-        return $this->transaction(function () use ($request, $step) {
+            // Carregar step do conexto e atual
+            $step = request()->get('step', $this->model()->steps->firstId());
+            $step = $this->step($step);
 
             // Validar inputs
             if (count($step->validates) > 0) {
@@ -108,5 +121,29 @@ trait WizardTrait
 
             return call_user_func_array([$this, $method], [$request, $step]);
         });
+    }
+
+    /**
+     * Retorna url do step.
+     * @param Step $step
+     * @param string $method
+     * @return string
+     */
+    protected function stepUrl(Step $step, $method = 'get')
+    {
+        $id = sprintf('%s.%s', $this->prefixRoute, $method);
+
+        return route($id, ['step' => $step->key]);
+    }
+
+    /**
+     * Redireciona para a url do step.
+     * @param Step $step
+     * @param string $method
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    protected function stepRedirect(Step $step, $method = 'get')
+    {
+        return redirect($this->stepUrl($step, $method));
     }
 }
