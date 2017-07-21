@@ -160,7 +160,7 @@ trait WizardTrait
                 error('Method "%s" not found in flow', $method);
             }
 
-            return call_user_func_array([$this, $method], [$request, $this->model]);
+            return call_user_func_array([$this, $method], [$this->model]);
         });
     }
 
