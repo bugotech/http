@@ -90,8 +90,9 @@ trait WizardTrait
         $view->with('step', $step);
         $view->with($this->viewParams);
 
-        $view->with('step_url', $this->stepUrl);
-        $view->with('step_redirect', $this->stepRedirect);
+        $view->with('step_url', function ($step, $method = 'get') {
+            return $this->stepUrl($step, $method);
+        });
 
         return $view;
     }
