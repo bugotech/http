@@ -132,7 +132,7 @@ trait WizardTrait
 
             // Guardar informações do nivel
             $data = Arr::except($request->all(), ['step']);
-            $this->model->{$step->key} = $data;
+            $this->model->{$step->key} = (object) $data;
 
             // Exeutar methodo do step
             $method = sprintf('postStep%s', Str::studly($step->key));
