@@ -3,6 +3,7 @@
 use Bugotech\Http\Router;
 use Bugotech\Db\FlowModel;
 use Bugotech\Db\Flow\Step;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
@@ -128,13 +129,37 @@ trait WizardTrait
                 $this->validate($step->validates);
             }
 
+            // Guardar informações do nivel
+            $data = Arr::except($request->all(), ['step']);
+            $this->model->{$step->key} = $data;
+
             // Exeutar methodo do step
             $method = sprintf('postStep%s', Str::studly($step->key));
-            if (! method_exists($this, $method)) {
-                error('Step method "%s" not found', $step->key);
+            $return = null;
+            if (method_exists($this, $method)) {
+                $return = call_user_func_array([$this, $method], [$request, $step, $this->model]);
             }
 
-            return call_user_func_array([$this, $method], [$request, $step]);
+            $this->model->save();
+
+            // Verificar se tem um return customizavel
+            if (! is_null($return)) {
+                return $return;
+            }
+
+            // Ir para o proximo passo
+            $next = $step->next();
+            if (! is_null($next)) {
+                return $this->stepRedirect($next);
+            }
+
+            // Finalizar passo
+            $method = 'terminateSteps';
+            if (! method_exists($this, $method)) {
+                error('Method "%s" not found in flow', $method);
+            }
+
+            return call_user_func_array([$this, $method], [$request, $this->model]);
         });
     }
 
