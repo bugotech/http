@@ -155,7 +155,7 @@ trait WizardTrait
             }
 
             // Finalizar passo
-            $method = 'terminateSteps';
+            $method = 'terminateFlow';
             if (! method_exists($this, $method)) {
                 error('Method "%s" not found in flow', $method);
             }
