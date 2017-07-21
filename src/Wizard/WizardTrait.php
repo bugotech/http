@@ -1,8 +1,8 @@
 <?php namespace Bugotech\Http\Wizard;
 
 use Bugotech\Http\Router;
-use Bugotech\Db\FlowModel;
 use Bugotech\Db\Flow\Step;
+use Bugotech\Db\FlowModel;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 trait WizardTrait
 {
     /**
-     * Model flow
+     * Model flow.
      * @var FlowModel
      */
     protected $model;
@@ -43,7 +43,7 @@ trait WizardTrait
     protected $viewParams = [];
 
     /**
-     * Define com step atual e retornal o objeto
+     * Define com step atual e retornal o objeto.
      * @param string $step
      * @return Step
      */
