@@ -55,7 +55,7 @@ trait WizardTrait
         }
 
         // Carregar model
-        $this->model = call_user_func_array($this->modelName, 'find', $flow);
+        $this->model = call_user_func_array([$this->modelName, 'find'], [$flow]);
         if (is_null($this->model)) {
             error('Flow "%s" not found', $flow);
         }
