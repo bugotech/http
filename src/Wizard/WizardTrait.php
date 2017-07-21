@@ -104,6 +104,7 @@ trait WizardTrait
         $view = view($view_id);
         $view->with('steps', $this->model->steps);
         $view->with('step', $step);
+        $view->with('model', $this->model);
         $view->with($this->viewParams);
 
         $view->with('step_url', function ($step, $method = 'get') {
