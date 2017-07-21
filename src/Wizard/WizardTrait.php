@@ -1,5 +1,6 @@
 <?php namespace Bugotech\Http\Wizard;
 
+use Bugotech\Http\Router;
 use Bugotech\Db\FlowModel;
 use Bugotech\Db\Flow\Step;
 use Illuminate\Support\Str;
@@ -41,32 +42,47 @@ trait WizardTrait
     protected $viewParams = [];
 
     /**
-     * Retorna o model.
-     * @return FlowModel
-     */
-    public function model()
-    {
-        if (! is_null($this->model)) {
-            return $this->model;
-        }
-
-        return $this->model = app($this->modelName);
-    }
-
-    /**
      * Define com step atual e retornal o objeto
-     * @param $step
+     * @param string $step
      * @return Step
      */
-    protected function step($step)
+    protected function flow($step)
     {
-        if (! $this->model()->steps->exists($step)) {
+        // Carregar id do flow
+        $flow = router()->current()->parameter('flow');
+        if (is_null($flow)) {
+            error('Flow not information');
+        }
+
+        // Carregar model
+        $this->model = call_user_func_array($this->modelName, 'find', $flow);
+        if (is_null($this->model)) {
+            error('Flow "%s" not found', $flow);
+        }
+
+        // Carregar step
+        $step = is_null($step) ? $this->model->steps->firstId() : $step;
+        if (! $this->model->steps->exists($step)) {
             error('Step "%s" not found', $step);
         }
 
-        $this->model()->steps->setCurrent($step);
+        $this->model->steps->setCurrent($step);
 
-        return $this->model()->steps->current();
+        return $this->model->steps->current();
+    }
+
+    /**
+     * Cria novo flow.
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function createFlow()
+    {
+        $model = app($this->modelName);
+        $model->save();
+
+        $step = $model->steps->firstId();
+
+        return redirect()->route(sprintf('%s.get', $this->prefixRoute), ['flow' => $model->_id, 'step' => $step]);
     }
 
     /**
@@ -76,8 +92,7 @@ trait WizardTrait
     public function getSteps()
     {
         // Carregar step do conexto e atual
-        $step = router()->current()->parameter('step', $this->model()->steps->firstId());
-        $step = $this->step($step);
+        $step = $this->flow(router()->current()->parameter('step'));
 
         // Carregar view
         $view_id = sprintf('%s.%s', $this->prefixViewName, $step->key);
@@ -86,7 +101,7 @@ trait WizardTrait
         }
 
         $view = view($view_id);
-        $view->with('steps', $this->model()->steps);
+        $view->with('steps', $this->model->steps);
         $view->with('step', $step);
         $view->with($this->viewParams);
 
@@ -106,8 +121,7 @@ trait WizardTrait
         return $this->transaction(function () use ($request) {
 
             // Carregar step do conexto e atual
-            $step = request()->get('step', $this->model()->steps->firstId());
-            $step = $this->step($step);
+            $step = $this->flow(request()->get('step'));
 
             // Validar inputs
             if (count($step->validates) > 0) {
@@ -146,5 +160,35 @@ trait WizardTrait
     protected function stepRedirect(Step $step, $method = 'get')
     {
         return redirect($this->stepUrl($step, $method));
+    }
+
+    /**
+     * Register routes of flow.
+     *
+     * @param Router $router
+     * @param $prefixPart
+     * @param $routePrefix
+     */
+    public static function routesRegister(Router $router, $prefixPart, $routePrefix)
+    {
+        $class = get_called_class();
+
+        // Get - Create flow
+        $part = sprintf('%s', $prefixPart);
+        $uses = sprintf('\%s@createFlow', $class);
+        $as = sprintf('%s.create', $routePrefix);
+        $router->get($part, ['uses' => $uses, 'as' => $as]);
+
+        // Get - Step
+        $part = sprintf('%s/{flow}/{step}', $prefixPart);
+        $uses = sprintf('\%s@getSteps', $class);
+        $as = sprintf('%s.get', $routePrefix);
+        $router->get($part, ['uses' => $uses, 'as' => $as]);
+
+        // Post - Step
+        $part = sprintf('%s/{flow}', $prefixPart);
+        $uses = sprintf('\%s@setSteps', $class);
+        $as = sprintf('%s.post', $routePrefix);
+        $router->post($part, ['uses' => $uses, 'as' => $as]);
     }
 }
